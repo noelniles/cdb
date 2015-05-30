@@ -3,7 +3,25 @@ namespace shakabra\cdb;
 
 class BaseView
 {
+    private $title;
+    private $author;
+    private $date;
+    private $html;
+    protected $page;
+
     public function __construct($data)
+    {
+        $this->title = $data->title;
+        $this->author = $data->author;
+        $this->date = $data->date;
+        $this->html = $data->html;
+    }
+    
+    public function render_fragment()
+    {
+        
+    }
+    public function render()
     {
         $this->page = <<<HEAD
 <!doctype html>
@@ -11,25 +29,21 @@ class BaseView
 
 <head>
     <meta charset="utf-8">
-    <title>$data->title</title>
+    <title>$this->title</title>
     <link rel="stylesheet" href="assets/css/materialize.css">
     <script src="assets/js/jquery.js"></script>
 </head>
 
     <body>
     <div class="container">
-        <h2>$data->title</h2>
-        <h3>$data->author</h3>
-        <h5>$data->date</h5>
-        $data->html
+        <h2>$this->title</h2>
+        <h3>$this->author</h3>
+        <h5>$this->date</h5>
+        $this->html
     </div><!-- end main container -->
     </body>
 </html>
 HEAD;
-    }
-
-    public function render()
-    {
         echo $this->page;
     }
 }
