@@ -1,5 +1,7 @@
 <?php
-require_once 'c/BaseController.php';
+namespace shakabra\cdb;
+
+use shakabra\cdb\BaseController;
 
 class Router
 {

@@ -1,6 +1,7 @@
 <?php
-require_once 'm/BaseModel.php';
-require_once 'v/BaseView.php';
+namespace shakabra\cdb;
+
+use shakabra\cdb\BaseModel;
 
 class BaseController
 {

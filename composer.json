@@ -1,0 +1,19 @@
+{
+    "name": "shakabra/cdb",
+    "description": "publish on the web with CouchDB",
+    "type": "project",
+    "license": "GPL-3.0+",
+    "authors": [
+        {
+            "name": "Noel Niles",
+            "email": "noelniles@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "shakabra\\cdb\\": ["src/", "src/c", "src/m", "src/v"]
+        }   
+    }
+}

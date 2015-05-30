@@ -1,4 +1,6 @@
 <?php
+namespace shakabra\cdb;
+
 /**
  * Handles CouchDB.
  */ 
@@ -74,7 +76,7 @@ class BaseModel
             $id = $docinfo->id;
             array_push($all_docs, $this->exec_dbaction($databaseName.'/'.$id));
         }
-
         return $all_docs;
     }
 }
+
