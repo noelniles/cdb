@@ -1,5 +1,7 @@
 <?php
 require_once 'm/BaseModel.php';
+require_once 'v/BaseView.php';
+
 class BaseController
 {
     private $db;
@@ -21,16 +23,8 @@ class BaseController
         $doclength = 500;
 
         for ($i = 0; $i < count($resp); $i++) {
-            
-            echo "<h2>".$resp[$i]->title."</h2>\n";
-            echo "<h3>".$resp[$i]->author."</h3>\n";
-            echo "<h4>".$resp[$i]->date."</h4>\n";
-            
-            if ($summarize) {
-                echo substr($resp[$i]->html, 0, $doclength) . '...';
-            } else {
-                echo $resp[$i]->html;
-            }
+            $vw = new BaseView($resp[$i]);
+            $vw->render();
         }   
     }
 
@@ -42,11 +36,10 @@ class BaseController
      */
     public function display_single_doc($docname)
     {
+        $data = array();
         $resp = $this->db->fetch_id(basename($docname)); 
-        echo "<h1>".$resp->title."</h1>\n";
-        echo "<h2>".$resp->author."</h2>\n";
-        echo "<h4>".$resp->date."</h4>\n";
-        echo $resp->body;
+        $vw = new BaseView($resp);
+        $vw->render();
     }
 
     /**
