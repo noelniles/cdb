@@ -7,6 +7,7 @@ class HomeView implements BaseView
     private $js;
     private $data;
     private $num_pages; 
+    private $side_menu_data;
 
     /**
      * @param $data Array of documents.
@@ -14,6 +15,7 @@ class HomeView implements BaseView
     public function __construct($data)
     {
         $this->data = $data;
+        $this->side_menu = $data['side_menu'];
         $this->num_pages = count($this->data);
         $this->css = '<link rel="stylesheet" type="text/css" href="assets/css/materialize.css">';
         $this->js = '<script src="assets/js/jquery.js"></script>';
@@ -37,6 +39,26 @@ class HomeView implements BaseView
         return $html_header;
     }    
 
+    private function side_menu()
+    {
+        $nav = '<ul class="side-nav fixed" id="slide-out">'.PHP_EOL;
+        foreach ($this->side_menu as $toplevel_item) {
+            $nav .= '<li><a href="#!">'.key($this->side_menu).'</a></li>'.PHP_EOL;
+            //$nav .= '<ul class="collapsible collapsible-accordion">'.PHP_EOL; 
+            //foreach ($toplevel_item as $subitem) {
+            //   $nav .= '<li><a href="#!">'.$subitem.'</a></li>'.PHP_EOL; 
+            //}
+            //$nav .= '</ul><!-- end sub list -->'.PHP_EOL;
+        }
+        $nav .= '<li><a href="#!">projects</a></li>'.PHP_EOL;
+        $nav .= '<li><a href="#!">github</a></li>'.PHP_EOL;
+        $nav .= '<li><a href="#!">experiments</a></li>'.PHP_EOL;
+        $nav .= '<li><a href="#!">resume</a></li>'.PHP_EOL;
+
+        $nav .= '</ul>'.PHP_EOL;
+        return $nav;
+    }
+
     /**
      * Adds HTML to page without duplicating HTML head tag.
      *
@@ -48,15 +70,28 @@ class HomeView implements BaseView
         $page_fragment = '';
 
         for ($i = 0; $i < $this->num_pages; $i++) {
-            $page_fragment .= '<h2>'.$this->data[$i]->title.'</h2>'.PHP_EOL;
-            $page_fragment .= '<h3>'.$this->data[$i]->author.'</h3>'.PHP_EOL;
-            $page_fragment .= '<h5>'.$this->data[$i]->date.'</h5>'.PHP_EOL;
-            $page_fragment .= $this->data[$i]->html.PHP_EOL;
+            if (isset($this->data[$i]->title)) {
+                $page_fragment .= '<h4>'.$this->data[$i]->title.'</h4>'.PHP_EOL;
+            }
+            
+            if (isset($this->data[$i]->author)) {
+                $page_fragment .= '<h6>'.$this->data[$i]->author.'</h6>'.PHP_EOL;
+            }
+
+            if (isset($this->data[$i]->date)) {
+                $page_fragment .= '<h6>'.$this->data[$i]->date.'</h6>'.PHP_EOL;
+            }
+
+            if (isset($this->data[$i]->html)) {
+                $summary = explode('</p>', $this->data[$i]->html);
+                $page_fragment .= $summary[0].PHP_EOL;
+                $page_fragment .= '<br><a class="bold italic" href="#">contine reading...</a>'.PHP_EOL;
+            }
         }
         $allpages_without_header = $page_fragment;
         return $allpages_without_header;
     }
-
+    
     /**
      * Adds HTML fragments to the body without duplicating the CSS container.
      * 
@@ -64,9 +99,13 @@ class HomeView implements BaseView
      */
     private function add_fragments_to_body($fragments)
     {
+        $side_menu = $this->side_menu();
         $body  = '<body>' . PHP_EOL;
         $body .= '<div class="container">' . PHP_EOL;
         $body .= '<div class="row">' . PHP_EOL;
+        $body .= '<div class="col s2">'.PHP_EOL;
+        $body .= $side_menu.PHP_EOL;
+        $body .= '</div><!-- end col s2 side menu -->';
         $body .= '<div class="col s9 offset-s2">' . PHP_EOL;
         $body .= $fragments . PHP_EOL;
         $body .= '</div><!-- end col s9 offset-s2 content column -->'.PHP_EOL;
@@ -101,7 +140,7 @@ class HomeView implements BaseView
         $frags= $this->buildeach_page_without_header();
         $body = $this->add_fragments_to_body($frags);
         $valid_html_page = $this->add_header_to_fragments($body);
-        return $valid_html_page;
+        echo $valid_html_page;
     }
 }
 

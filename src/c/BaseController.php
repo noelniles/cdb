@@ -19,17 +19,17 @@ class BaseController
      * 
      * @return array The menu items and subitems ["item", subitems[], ...,]
      */
-    public function display_side_menu()
+    public function side_menu_data()
     {
         $menu = array();
         $menu_items = $this->db->fetchall_dbs();
         $submenu = array();
         foreach ($menu_items as $dbname) {
             if (strpos($dbname, '_') !== 0) {
-                $subitems = $this->db->fetchall_ids($dbname)->rows;
+                $subitems = $this->db->fetchall_ids($dbname);
                 for ($i = 0; $i < count($subitems); $i++) {
                     
-                    $submenu[$i] = $subitems[$i]->id;
+                    $submenu[$i] = $subitems[$i];
                 }
                 $menu[$dbname] = $submenu;
             }
@@ -47,6 +47,7 @@ class BaseController
     public function display_all_docs($databaseName, $summarize=false)
     {
         $data = $this->allpage_data;
+        $data['side_menu'] = $this->side_menu_data(); 
         $alldocs_view = new HomeView($data);
         return $alldocs_view->render();
     }
