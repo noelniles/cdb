@@ -6,12 +6,38 @@ use shakabra\cdb\BaseModel;
 class BaseController
 {
     private $db;
+    private $allpage_data;
+
     public function __construct()
     {
         $this->db = new BaseModel();   
+        $this->allpage_data = $this->db->fetchall_docs('published');
+    }
+
+    /**
+     * Builds a side menu from all the databases.
+     * 
+     * @return array The menu items and subitems ["item", subitems[], ...,]
+     */
+    public function display_side_menu()
+    {
+        $menu = array();
+        $menu_items = $this->db->fetchall_dbs();
+        $submenu = array();
+        foreach ($menu_items as $dbname) {
+            if (strpos($dbname, '_') !== 0) {
+                $subitems = $this->db->fetchall_ids($dbname)->rows;
+                for ($i = 0; $i < count($subitems); $i++) {
+                    
+                    $submenu[$i] = $subitems[$i]->id;
+                }
+                $menu[$dbname] = $submenu;
+            }
+        }
+        return $menu;
     }
     /**
-     * Used to display all the documents.
+     * Used on the homepage if there is no request uri. Displays all docs.
      * 
      * @param string $databaseName
      * @param bool $summarize If true truncate the text at $doclength 
@@ -20,17 +46,13 @@ class BaseController
      */
     public function display_all_docs($databaseName, $summarize=false)
     {
-        $resp = $this->db->fetchall_docs($databaseName);
-        $doclength = 500;
-
-        for ($i = 0; $i < count($resp); $i++) {
-            $vw = new BaseView($resp[$i]);
-            $vw->render();
-        }   
+        $data = $this->allpage_data;
+        $alldocs_view = new HomeView($data);
+        return $alldocs_view->render();
     }
 
     /**
-     * Displays the whole post on it's own page.
+     * Used to display a single page.
      *
      * @param string $docname The name of the document to display
      * @return string Echoes HTML to the browser
@@ -39,41 +61,8 @@ class BaseController
     {
         $data = array();
         $resp = $this->db->fetch_id(basename($docname)); 
-        $vw = new BaseView($resp);
-        $vw->render();
-    }
-
-    /**
-     * Builds an HTML ul of links to document IDs
-     *
-     * @return string Echoes unordered list to browser
-     */
-    public function docs_asmenu()
-    {
-        echo '<ul class="side-nav fixed" id="nav-mobile">' . "\n";
-        $docs = $this->db->fetchall_ids('published');
-
-        foreach($docs->rows as $menu_item) {
-            $item_name = ucwords(str_replace('_', ' ', $menu_item->id));
-            echo '<li><a class="thin" href="'.$menu_item->id.'">'.$item_name."</a></li>\n";
-        }
-        echo "</ul>\n";
-    }
-
-    /**
-     * Builds an HTML ul of database names.
-     *
-     * @return string Not used
-     */
-    public function dbs_asmenu()
-    {
-        echo "<ul>\n";
-        $dbs = $this->db->fetchall_dbs();   
-        foreach ($dbs as $menu_item) {
-            $item_name = str_replace(' ', '_', $item_name);
-            echo '<li><a href="stop_using_weak_passwords">'.$item_name."</a></li>\n";
-        }   
-        echo "</ul><!-- end menu -->\n";
+        $vw->build_side_menu();
+        //$vw->render();
     }
 }
 

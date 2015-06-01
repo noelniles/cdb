@@ -56,7 +56,13 @@ class BaseModel
     public function fetchall_ids($databaseName)
     {
         $action = $databaseName . '/_all_docs';
-        $ids = $this->exec_dbaction($action);
+        $rows = $this->exec_dbaction($action)->rows;
+        $ids = array();
+
+        foreach ($rows as $row) {
+            array_push($ids, $row->id);
+        }
+        //print_r($ids);
         return $ids;
     }
 
@@ -72,8 +78,9 @@ class BaseModel
         /* array of document ids */
         $ids = $this->fetchall_ids($databaseName);
 
-        foreach($ids->rows as $docinfo) {
-            $id = $docinfo->id;
+        foreach($ids as $docinfo) {
+            //@todo FIX THIS SHIT
+            $id = $docinfo;
             array_push($all_docs, $this->exec_dbaction($databaseName.'/'.$id));
         }
         return $all_docs;

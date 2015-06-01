@@ -12,7 +12,8 @@ class Router
             $this->controller->display_single_doc($_SERVER['REQUEST_URI']);
         } else {
             //serve the default
-            $this->controller->display_all_docs('published');
+            echo $this->controller->display_all_docs('published');
+            //$this->controller->display_side_menu();
         }
     }
 }
