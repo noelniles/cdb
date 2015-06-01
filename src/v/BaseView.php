@@ -1,7 +1,7 @@
 <?php
 namespace shakabra\cdb;
 
-interface BaseView
+abstract class BaseView
 {
-    public function render();
+    abstract protected function render();
 }

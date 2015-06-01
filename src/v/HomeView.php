@@ -1,7 +1,7 @@
 <?php
 namespace shakabra\cdb;
 
-class HomeView implements BaseView
+class HomeView extends BaseView
 {
     private $css;
     private $js;
