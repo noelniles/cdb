@@ -5,15 +5,46 @@ use shakabra\cdb\BaseController;
 
 class Router
 {
-    public function __construct()
+    private $cntl; /* controller */
+    private $reqd; /* requested resource */
+    private $okay_routes = ["home",
+                            "git",
+                            "projects",
+                            "posts",
+                            "cv"
+                           ];
+
+    public function __construct($requested)
     {
-        $this->controller = new BaseController();
-        if (basename($_SERVER['REQUEST_URI']) != 'cdb') {
-            $this->controller->display_single_doc($_SERVER['REQUEST_URI']);
+        echo "<br>Router contruction begining<br>";
+        $this->cntl = new BaseController();
+        $this->reqd = $this->parse_request($requested);
+        $this->find_requested_controller($this->reqd);
+    }
+    
+    public function __destruct()
+    {
+        echo "<br>Destroying the router</br>";
+    } 
+    
+    private function parse_request($request)
+    {
+        $parsed_request = parse_url($request);
+        $parsed_request["params"] = explode("&", $parsed_request["query"]);
+    }
+    
+    /* @param request string
+     * @return void
+     */
+    private function find_requested_controller($requested)
+    {
+        if (in_array($requested, $this->okay_routes)) {
+            /* route $r to appropriate controller */
+            echo "<br>sweet route bro</br>";
+
         } else {
-            //serve the default
-            $this->controller->display_all_docs('published');
-            //$this->controller->display_side_menu();
+            /* report that $r is unroutable */
+            echo "<br>no bueno</br>";
         }
     }
 }
