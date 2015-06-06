@@ -5,16 +5,30 @@ use shakabra\cdb\BaseController;
 
 class Router
 {
+    private $cntl;
+    private $dbname;
+    private $request_uri;
+
     public function __construct()
     {
-        $this->controller = new BaseController();
-        if (basename($_SERVER['REQUEST_URI']) != 'cdb') {
-            $this->controller->display_single_doc($_SERVER['REQUEST_URI']);
-        } else {
-            //serve the default
-            $this->controller->display_all_docs('published');
-            //$this->controller->display_side_menu();
+        $this->request_uri = $_SERVER['REQUEST_URI'];
+        $this->dbname = $this->parse_uri($this->request_uri);
+        $this->cntl = new BaseController($this->dbname);
+        if (DEBUG) {
+            $this->dump_object();
         }
+        $this->cntl->all_docs();
     }
+
+    private function parse_uri($uri)
+    {
+        if (empty($uri)) {
+            return false;
+        } else {
+            $requested_db = 'published';
+        } 
+        echo "<h1>SUCCESS</h1>";
+        return $requested_db;
+    }    
 }
 

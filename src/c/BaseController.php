@@ -8,10 +8,11 @@ class BaseController
     private $db;
     private $allpage_data;
 
-    public function __construct()
+    public function __construct($dbname)
     {
-        $this->db = new BaseModel();   
-        $this->allpage_data = $this->db->fetchall_docs('published');
+        $this->dbname = $dbname;
+        $this->db = new BaseModel($dbname); 
+        $this->allpage_data = $this->db->fetchall_docs();
     }
 
     /**
@@ -44,7 +45,7 @@ class BaseController
      * @return string Echoes the document to the browser
      * @todo Make the HTML formatting more graceful
      */
-    public function display_all_docs($databaseName, $summarize=false)
+    public function all_docs($summarize=false)
     {
         $data = $this->allpage_data;
         $data['side_menu'] = $this->side_menu_data(); 
@@ -58,7 +59,7 @@ class BaseController
      * @param string $docname The name of the document to display
      * @return string Echoes HTML to the browser
      */
-    public function display_single_doc($docname)
+    public function single_doc($docname)
     {
         $data = array();
         $resp = $this->db->fetch_id(basename($docname)); 

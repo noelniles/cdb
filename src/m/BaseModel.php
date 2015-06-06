@@ -6,6 +6,11 @@ namespace shakabra\cdb;
  */ 
 class BaseModel
 {
+    public function __construct($dbname)
+    {
+        $this->dbname = $dbname;
+    }
+
     /**
      * Executes the curl command on a database resource.
      *
@@ -43,7 +48,7 @@ class BaseModel
      */
     public function fetch_id($idname)
     {
-        $action = '/published/'.$idname;
+        $action = $this->dbname.$idname;
         $article = $this->exec_dbaction($action);
         return $article;
     }
@@ -53,16 +58,15 @@ class BaseModel
      *
      * @param string The name of the database
      */
-    public function fetchall_ids($databaseName)
+    public function fetchall_ids()
     {
-        $action = $databaseName . '/_all_docs';
+        $action = $this->dbname. '/_all_docs';
         $rows = $this->exec_dbaction($action)->rows;
         $ids = array();
 
         foreach ($rows as $row) {
             array_push($ids, $row->id);
         }
-        //print_r($ids);
         return $ids;
     }
 
@@ -72,16 +76,16 @@ class BaseModel
      * @param string $databaseName
      * @return array 
      */ 
-    public function fetchall_docs($databaseName)
+    public function fetchall_docs()
     {   
         $all_docs = array();
         /* array of document ids */
-        $ids = $this->fetchall_ids($databaseName);
+        $ids = $this->fetchall_ids();
 
         foreach($ids as $docinfo) {
             //@todo FIX THIS SHIT
             $id = $docinfo;
-            array_push($all_docs, $this->exec_dbaction($databaseName.'/'.$id));
+            array_push($all_docs, $this->exec_dbaction($this->dbname.'/'.$id));
         }
         return $all_docs;
     }
