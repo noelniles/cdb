@@ -3,8 +3,11 @@ namespace shakabra\cdb;
 
 class dbgHelper
 {
-    public function __construct()
+    private $that;
+
+    public function __construct($that)
     {
+        $this->that = $that;
         if (DEBUG) {
             $this->dump_object();
         }
