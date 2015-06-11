@@ -6,7 +6,7 @@ class PublisherView extends BaseView
 {
     protected $data;
 
-    public function __construct(array $data, PublisherMenu $other_view = null)
+    public function __construct(array $data, PublisherMenuView $other_view = null)
     {
         $this->data = $data;
     }
@@ -20,10 +20,33 @@ class PublisherView extends BaseView
     {
         return $fragents;
     }
+    
+    private function publisher_html()
+    {
+        $html  = '<label for="title">title</label>';
+        $html .= '<input type="text" id="title" placeholder="title">'; 
+
+        $html .= '<label for="author">author</label>';
+        $html .= '<input type="text" id="author" placeholder="author">'; 
+
+        $html .= '<label for="date">date</label>';
+        $html .= '<input type="text" id="date" placeholder="date">'; 
+
+        $html .= '<label for="date">date</label>';
+        $html .= '<input type="text" id="date" placeholder="date">'; 
+
+        $html .= '<label for="body">body</label>';
+        $html .= '<input type="text" id="body" placeholder="body">'; 
+
+        $html .= '<button type="button">Save</button>';
+        $html .= '<button type="button">Publish</button>';
+
+        return $html;
+    }
 
     /* shows the data */
     public function render()
     {
-        print_r($this->data);
+        echo $this->publisher_html();
     }
 }
