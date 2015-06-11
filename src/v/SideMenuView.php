@@ -3,31 +3,31 @@ namespace shakabra\cdb;
 
 class SideMenuView extends BaseView
 {
-    private $side_menu;
+    private $side_nav;
 
-    public __construct()
+    public function __construct($data)
     {
-        $this->side_menu = $data['side_menu'];
+        $this->side_nav = $this->side_menu($data);
     }
 
-    private function side_menu()
+    private function side_menu($data)
     {
-        foreach ($this->side_menu as $toplevel_item) {
-            $nav .= '<li><a href="#!">'.key($this->side_menu);
+        $nav = '';
+        foreach ($data as $toplevel_item) {
+            $nav .= '<li><a href="#!">'.key($data);
             $nav .= '</a></li>'.PHP_EOL;
         }
-
         $nav .= '<li><a href="#!">projects</a></li>'.PHP_EOL;
         $nav .= '<li><a href="#!">github</a></li>'.PHP_EOL;
         $nav .= '<li><a href="#!">experiments</a></li>'.PHP_EOL;
         $nav .= '<li><a href="#!">resume</a></li>'.PHP_EOL;
-
         $nav .= '</ul>'.PHP_EOL;
+
         return $nav;
     }
 
     protected function render()
     {
-        echo $this->side_menu;    
+        echo $this->side_nav;    
     }
 }

@@ -1,25 +1,44 @@
 <?php
 namespace shakabra\cdb;
 
+
 class HomeController extends BaseController
 {
-    private $home_data;
-    private $menu_data;
 
-    public function __construct($dbname)
+    public function __construct($params)
     {
-        parent::__construct($dbname);   
-        $this->home_data = $this->all_page_data;
+        /* Home view uses the 'published' database. */
+        $this->dbname = 'published';
+        $this->model = new HomeModel($this->dbname);
     }
 
-    /* Used on the homepage if there is no request uri. Displays all docs.
-     * @param string $databaseName
-     * @param bool $summarize If true truncate the text at $doclength 
-     * @return string Echoes the document to the browser
-     */
-    public function all_docs($summarize=false)
+    /* Gathers all the published posts for the home view. */
+    protected function gather_data()
     {
-        $alldocs_view = new HomeView($data);
-        $alldocs_view->render();
+        $data = array();
+        /* array of document ids */
+        $ids = $this->model->ids();
+
+        foreach($ids as $id) {
+            $query = $this->dbname . DIRECTORY_SEPARATOR . $id;
+            array_push($data, $this->model->run($query));
+        }
+        return $data;
+    }
+
+    public function index()
+    {
+        /* get home page data */
+        $vw_data = $this->gather_data();
+
+        /* home page has a side menu */
+        $side_menu = new SideMenuController();
+        $side_menu = $side_menu->index();
+
+        /* pass all the data to the home view */
+        $view = new HomeView($vw_data, $side_menu);
+
+        /* show the page */
+        $view->render();
     }
 }

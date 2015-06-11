@@ -11,11 +11,11 @@ class HomeView extends BaseView
     /**
      * @param $data Array of documents.
      */
-    public function __construct($data)
+    public function __construct($data, SideMenuView $side_menu)
     {
         parent::__construct($data);
-        $this->num_pages = count($this->data);
-        $this->side_menu = new SideMenuView($this->data['side_menu']);
+        $this->side_menu = $side_menu;
+        $this->num_pages = count($data);
         $this->css = '<link rel="stylesheet" type="text/css" href="assets/css/materialize.css">';
         $this->js = '<script src="assets/js/jquery.js"></script>';
     }

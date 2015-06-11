@@ -3,11 +3,13 @@ namespace shakabra\cdb;
 
 abstract class BaseView
 {
-    private $data;
+    protected $data;
 
-    public function __construct($data)
+    public function __construct(array $data, BaseView $other_view = null)
     {
         $this->data = $data;
     }
+
+    /* shows the data */
     abstract protected function render();
 }

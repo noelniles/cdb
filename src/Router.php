@@ -1,7 +1,6 @@
 <?php
 namespace shakabra\cdb;
 
-use shakabra\cdb\BaseController;
 
 class Router
 {
@@ -23,33 +22,11 @@ class Router
     {
         foreach ($params as $key => $value) {
             if ($key == 'p') {
-                switch ($value) {
-                    case 'posts':
-                        echo '<h1>Posts Controller</h1>';
-                        // $this->cntl = new PostsController($params);
-                        break;
-                    case 'home':
-                        echo '<h1>Home Controller</h1><br>';
-                        print_r($params);
-                        $this->cntl = new HomeController($params);
-                        $this->cntl->all_docs();
-                        break;
-                    case 'projects':
-                        echo '<h1>Projects Controller</h1>';
-                        // $this->cntl = new ProjectsController($params);
-                        break;
-                    case 'experiments':
-                        echo '<h1>Experiments Controller</h1>';
-                        // $this->cntl = new ExperimentsController($params);
-                        break;
-                    case 'cv':
-                        echo '<h1>CV Controller</h1>';
-                        // $this->cntl = new CVController($params);
-                        break;
-                    default:
-                        echo '<h1>Default Controller</h1>';
-                        // $this->cntl = new DefaultController($params);
-                } 
+                $prefix = __NAMESPACE__ . "\\" . ucfirst($value);
+                $controller_name = $prefix . "Controller";
+                //$this->cntl = new HomeController($value);
+                $this->cntl = new $controller_name($value);
+                $this->cntl->index();
             }
         }
     }

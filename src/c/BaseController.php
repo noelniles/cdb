@@ -1,19 +1,19 @@
 <?php
 namespace shakabra\cdb;
 
-use shakabra\cdb\BaseModel;
 
 abstract class BaseController
 {
-    private $db;
-    private $allpage_data;
+    /* the data store */
+    private $model;
 
-    public function __construct($dbname)
-    {
-        "<br>base controller before model creation<br>";
-        $this->db = new BaseModel($dbname);
-        "<br>base controller after model creation<br>";
-        $this->allpage_data = $this->db->fetchall_docs();
-    }
+    /* data that is passed to the view */
+    private $vw_data;
+
+    /* this is where we get data from the model */
+    abstract protected function gather_data();
+
+    /* this is where the complete view gets rendered */
+    abstract protected function index();
 }
 
