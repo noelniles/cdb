@@ -11,9 +11,7 @@ class BaseModel
         $this->dbname = $dbname;
     }
 
-    /**
-     * Executes the curl command on a database resource.
-     *
+    /* Executes the curl command on a database resource.
      * @param string $uri The path to the couchdb resource
      * @return array
      */
@@ -27,9 +25,7 @@ class BaseModel
         return json_decode($resp);
     }
 
-    /** 
-     * Used mostly to make menus of databases.
-     *
+    /* Used mostly to make menus of databases.
      * @return array All of the databases ex: ['db1', 'db2',...,'dbN']
      */
     public function fetchall_dbs()
@@ -39,9 +35,7 @@ class BaseModel
         return $alldbs;
     }
     
-    /** 
-     * Actually fetches by id name--a misnomer.
-     *
+    /* Actually fetches by id name--a misnomer.
      * @param string $idname The id of the document to fetch
      * @return array Single document from the database
      * @todo Fix the misnomerism

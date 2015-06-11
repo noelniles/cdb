@@ -6,22 +6,19 @@ use shakabra\cdb\BaseController;
 class Router
 {
     private $cntl;
-    private $dbname;
     private $request_uri;
-    /* routes correspond to controllers */
-    private $ok_routes = ["home", "posts", "projects", "experiments", "cv"];
-    private $query_keys = ["p"];
-    private $params = [];
+    private $params = array();
 
     public function __construct()
     {
         $this->request_uri = $_SERVER['REQUEST_URI'];
         $this->params = $this->parse_uri($this->request_uri);
         $this->dispatch($this->params);
-        //$this->dbname = $this->parse_uri($this->request_uri);
-        //$this->cntl->all_docs();
     }
-
+    
+    /* Maps queries to routes.
+     * @param $params assoc array of queries created by parse_uri() 
+     */
     private function dispatch($params)
     {
         foreach ($params as $key => $value) {
@@ -33,8 +30,10 @@ class Router
                         // $this->cntl = new PostsController($params);
                         break;
                     case 'home':
-                        echo '<h1>Home Controller</h1>';
-                        // $this->cntl = new HomeController($params);
+                        echo '<h1>Home Controller</h1><br>';
+                        print_r($params);
+                        $this->cntl = new HomeController($params);
+                        $this->cntl->all_docs();
                         break;
                     case 'projects':
                         echo '<h1>Projects Controller</h1>';
@@ -55,6 +54,10 @@ class Router
             }
         }
     }
+
+    /* Turns a query string into an assoc array. The key/values in the query 
+     * must be separated by '+' for this function to work.
+     */
     private function parse_uri($uri)
     {
         $uri = parse_url($uri, PHP_URL_QUERY);

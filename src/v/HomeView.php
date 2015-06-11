@@ -5,18 +5,17 @@ class HomeView extends BaseView
 {
     private $css;
     private $js;
-    private $data;
     private $num_pages; 
-    private $side_menu_data;
+    private $side_menu;
 
     /**
      * @param $data Array of documents.
      */
     public function __construct($data)
     {
-        $this->data = $data;
-        $this->side_menu = $data['side_menu'];
+        parent::__construct($data);
         $this->num_pages = count($this->data);
+        $this->side_menu = new SideMenuView($this->data['side_menu']);
         $this->css = '<link rel="stylesheet" type="text/css" href="assets/css/materialize.css">';
         $this->js = '<script src="assets/js/jquery.js"></script>';
     }
@@ -38,26 +37,6 @@ class HomeView extends BaseView
 
         return $html_header;
     }    
-
-    private function side_menu()
-    {
-        $nav = '<ul class="side-nav fixed" id="slide-out">'.PHP_EOL;
-        foreach ($this->side_menu as $toplevel_item) {
-            $nav .= '<li><a href="#!">'.key($this->side_menu).'</a></li>'.PHP_EOL;
-            //$nav .= '<ul class="collapsible collapsible-accordion">'.PHP_EOL; 
-            //foreach ($toplevel_item as $subitem) {
-            //   $nav .= '<li><a href="#!">'.$subitem.'</a></li>'.PHP_EOL; 
-            //}
-            //$nav .= '</ul><!-- end sub list -->'.PHP_EOL;
-        }
-        $nav .= '<li><a href="#!">projects</a></li>'.PHP_EOL;
-        $nav .= '<li><a href="#!">github</a></li>'.PHP_EOL;
-        $nav .= '<li><a href="#!">experiments</a></li>'.PHP_EOL;
-        $nav .= '<li><a href="#!">resume</a></li>'.PHP_EOL;
-
-        $nav .= '</ul>'.PHP_EOL;
-        return $nav;
-    }
 
     /**
      * Adds HTML to page without duplicating HTML head tag.
@@ -99,12 +78,11 @@ class HomeView extends BaseView
      */
     private function add_fragments_to_body($fragments)
     {
-        $side_menu = $this->side_menu();
         $body  = '<body>' . PHP_EOL;
         $body .= '<div class="container">' . PHP_EOL;
         $body .= '<div class="row">' . PHP_EOL;
         $body .= '<div class="col s2">'.PHP_EOL;
-        $body .= $side_menu.PHP_EOL;
+        $body .= $this->side_menu->render().PHP_EOL;
         $body .= '</div><!-- end col s2 side menu -->';
         $body .= '<div class="col s9 offset-s2">' . PHP_EOL;
         $body .= $fragments . PHP_EOL;
