@@ -25,7 +25,7 @@ class HomeController extends BaseController
         }
         return $data;
     }
-
+    
     public function index()
     {
         /* get home page data */

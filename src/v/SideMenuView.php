@@ -26,8 +26,18 @@ class SideMenuView extends BaseView
         return $nav;
     }
 
+    protected function wrap_fragment($fragment)
+    {
+        $html = '<div class="">';
+        $html .= $fragment;
+        $html .= '</div><!-- end side nav fragment -->';
+        return $html;
+    }
+
     protected function render()
     {
-        echo $this->side_nav;    
+        $frag = $this->side_nav;
+        $menu = $this->wrap_fragment($frag);
+        echo $menu; 
     }
 }

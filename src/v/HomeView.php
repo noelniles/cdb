@@ -3,10 +3,8 @@ namespace shakabra\cdb;
 
 class HomeView extends BaseView
 {
-    private $css;
-    private $js;
-    private $num_pages; 
-    private $side_menu;
+    private $num_pages;    /* used to control the loop over the database */ 
+    private $side_menu;    /* another view */
 
     /**
      * @param $data Array of documents.
@@ -16,32 +14,9 @@ class HomeView extends BaseView
         parent::__construct($data);
         $this->side_menu = $side_menu;
         $this->num_pages = count($data);
-        $this->css = '<link rel="stylesheet" type="text/css" href="assets/css/materialize.css">';
-        $this->js = '<script src="assets/js/jquery.js"></script>';
     }
 
-    /* Inserts css and js into HTML head tag 
-     *
-     * @return string HTML head tag 
-     */
-    private function build_html_header()
-    {
-        $html_header = '<!doctype html>'.PHP_EOL;
-        $html_header .= '<html lang="en">'.PHP_EOL;
-        $html_header .= '<head>'.PHP_EOL;
-        $html_header .= '<meta charset="utf-8">'.PHP_EOL;
-        $html_header .= $this->css.PHP_EOL;
-        $html_header .= $this->js.PHP_EOL;
-        $html_header .= "<title>Home</title>".PHP_EOL;
-        $html_header .= '</head>'.PHP_EOL;
-
-        return $html_header;
-    }    
-
-    /**
-     * Adds HTML to page without duplicating HTML head tag.
-     *
-     * @return string A bunch of HTML without a head tag
+    /* Pulls out 'title', 'author', 'date' and 'html' to build the home view.
      */
     private function buildeach_page_without_header()
     {
@@ -49,18 +24,16 @@ class HomeView extends BaseView
         $page_fragment = '';
 
         for ($i = 0; $i < $this->num_pages; $i++) {
+
             if (isset($this->data[$i]->title)) {
                 $page_fragment .= '<h4>'.$this->data[$i]->title.'</h4>'.PHP_EOL;
             }
-            
             if (isset($this->data[$i]->author)) {
                 $page_fragment .= '<h6>'.$this->data[$i]->author.'</h6>'.PHP_EOL;
             }
-
             if (isset($this->data[$i]->date)) {
                 $page_fragment .= '<h6>'.$this->data[$i]->date.'</h6>'.PHP_EOL;
             }
-
             if (isset($this->data[$i]->html)) {
                 $summary = explode('</p>', $this->data[$i]->html);
                 $page_fragment .= $summary[0].PHP_EOL;
@@ -76,7 +49,7 @@ class HomeView extends BaseView
      * 
      * @return string An HTML body with content and no head tag
      */
-    private function add_fragments_to_body($fragments)
+    protected function wrap_fragment($fragments)
     {
         $body  = '<body>' . PHP_EOL;
         $body .= '<div class="container">' . PHP_EOL;
@@ -95,29 +68,18 @@ class HomeView extends BaseView
         return $body;
     }
 
-    /**
-     * Adds HTML header to a bunch of HTML fragments.
-     *
-     * @return string A (hopefully) valid HTML page.
-     */
-    private function add_header_to_fragments($fragments)
+    /* Adds html header to fragments */
+    protected function finalize($fragments)
     {
-        $html_head = $this->build_html_header();     
-        $fragments_without_header = $fragments; 
-        $page_with_header = $html_head . $fragments_without_header;
+        $page_with_header = $this->html_header . $fragments;
         return $page_with_header;
     }
-
-    /**
-     * Echoes a theorectically valid HTML page to the browser
-     *
-     * @return string
-     */
+    
     public function render()
     {
         $frags= $this->buildeach_page_without_header();
-        $body = $this->add_fragments_to_body($frags);
-        $valid_html_page = $this->add_header_to_fragments($body);
+        $body = $this->wrap_fragment($frags);
+        $valid_html_page = $this->finalize($body);
         echo $valid_html_page;
     }
 }
