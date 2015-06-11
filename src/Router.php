@@ -23,7 +23,6 @@ class Router
     {
         foreach ($params as $key => $value) {
             if ($key == 'p') {
-                echo "found one";
                 switch ($value) {
                     case 'posts':
                         echo '<h1>Posts Controller</h1>';
@@ -58,7 +57,7 @@ class Router
     /* Turns a query string into an assoc array. The key/values in the query 
      * must be separated by '+' for this function to work.
      */
-    private function parse_uri($uri)
+    protected function parse_uri($uri)
     {
         $uri = parse_url($uri, PHP_URL_QUERY);
         $uri = explode('+', $uri);
@@ -66,7 +65,9 @@ class Router
         $params = array();
         foreach ($uri as $param) {
             $item = explode('=', $param);
-            $params[$item[0]] = $item[1];
+            if (! empty($item[1])) {
+                $params[$item[0]] = $item[1];
+            }
         }
         return $params;
     }    
