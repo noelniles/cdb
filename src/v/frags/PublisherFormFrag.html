@@ -1,26 +1,24 @@
-<div class="row">
-    <div class="input-field">
+<form>
+    <div class="mui-form-group">
         <label for="title">title</label>
-        <input type="text" id="title" placeholder="title"> 
-    </div><!-- end title field -->
-
-    <div class="input-field">
+        <input type="text" class="mui-form-control" id="title" placeholder="title"> 
+    </div>
+    <div class="mui-form-group">
         <label for="author">author</label>
-        <input type="text" id="author" placeholder="author"> 
-    </div><!-- end author field -->
-
-    <div class="input-field">
+        <input type="text" class="mui-form-control" id="author" placeholder="author"> 
+    </div>
+    <div class="mui-form-group">
         <label for="date">date</label>
-        <input type="text" id="date" placeholder="date"> 
-    </div><!-- end date field -->
-</div><!-- end row -- >
+        <input type="text" class="mui-form-control" id="date" placeholder="date"> 
+    </div><!-- end mui-form-group title author and date fields -->
 
-<div class="row">
-    <div class="input-field">
+    <div class="mui-form-group">
         <label for="body">body</label>
-        <input type="text" id="body" placeholder="body"> 
-    </div><!-- end body field -->
-</div><!-- end body row -->
+        <textarea type="text" class="mui-form-control" id="body" rows="15" 
+            placeholder="body"> 
+        </textarea>
+    </div><!-- end mui-form-group body field -->
 
-<button type="button">Save</button>
-<button type="button">Publish</button>
+<button class="mui-btn mui-btn-default" type="button">Save</button>
+<button class="mui-btn mui-btn-danger" type="button">Publish</button>
+</form><!-- end publisher form -->

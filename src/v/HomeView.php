@@ -16,23 +16,6 @@ class HomeView extends BaseView
         $this->num_pages = count($data);
     }
 
-    /* Inserts css and js into HTML head tag 
-     *
-     * @return string HTML head tag 
-     */
-    private function build_html_header()
-    {
-        $html_header = '<!doctype html>'.PHP_EOL;
-        $html_header .= '<html lang="en">'.PHP_EOL;
-        $html_header .= '<head>'.PHP_EOL;
-        $html_header .= '<meta charset="utf-8">'.PHP_EOL;
-        $html_header .= $this->incl_tags('css', null, null);
-        $html_header .= $this->incl_tags('javascript', null, true);
-        $html_header .= "<title>Home</title>".PHP_EOL;
-        $html_header .= '</head>'.PHP_EOL;
-
-        return $html_header;
-    }    
 
     /**
      * Adds HTML to page without duplicating HTML head tag.
@@ -71,16 +54,17 @@ class HomeView extends BaseView
     protected function wrap_fragment($fragments)
     {
         $body  = '<body>' . PHP_EOL;
-        $body .= '<div class="container">' . PHP_EOL;
-        $body .= '<div class="row">' . PHP_EOL;
-        $body .= '<div class="col s2">'.PHP_EOL;
-        $body .= $this->side_menu->render().PHP_EOL;
-        $body .= '</div><!-- end col s2 side menu -->';
-        $body .= '<div class="col s9 offset-s2">' . PHP_EOL;
+        $body .= '<div class="mui-container fluid">' . PHP_EOL;
+        $body .= '<div class="mui-row">' . PHP_EOL;
+        $body .= '<div class="mui-col-md-2">'.PHP_EOL;
+        $body .= ($this->side_menu) ? $this->side_menu->render() : ''.PHP_EOL;
+        $body .= '</div><!-- end mui-col-md2 side menu -->';
+        $body .= '<div class="mui-col-md-9 offset-s2">' . PHP_EOL;
         $body .= $fragments . PHP_EOL;
-        $body .= '</div><!-- end col s9 offset-s2 content column -->'.PHP_EOL;
-        $body .= '</div><!-- end row -->'.PHP_EOL;
-        $body .= '</div><!-- end  container -->'.PHP_EOL;
+        $body .= '</div><!-- end mui-col-md-9 offset-s2 content column -->'.PHP_EOL;
+        $body .= '</div><!-- end mui-row -->'.PHP_EOL;
+        $body .= '</div><!-- end  mui-container -->'.PHP_EOL;
+        $body .= $this->incl_tags('javascript', ['src/res/js/materialize.js']);
         $body .= '</body>' . PHP_EOL;
         $body .= '</html>' . PHP_EOL;
 
@@ -96,7 +80,8 @@ class HomeView extends BaseView
     
     public function render()
     {
-        $body = $this->add_fragments_to_body($frags);
+        $frags = $this->buildeach_page_without_header();
+        $body = $this->wrap_fragment($frags);
         $header = $this->build_html_header();
         printf("%s %s", $header, $body);
     }

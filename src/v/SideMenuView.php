@@ -10,9 +10,15 @@ class SideMenuView extends BaseView
         $this->side_nav = $this->side_menu($data);
     }
 
+    /* Given $data = ['list header'  => ['i0', 'i1', 'i2'], 
+                      'list header2' => ['i0', 'i1', 'i2'] ] 
+       attempts to create an HTML unordered list. Ya know, a side menu.
+     */
     private function side_menu($data)
     {
-        $nav = '<ul>' . PHP_EOL;
+        $nav = '';
+        $nav .= '<nav id="sidenav">';
+        $nav .= '<ul>' . PHP_EOL;
         foreach ($data as $toplevel_item) {
             $nav .= '<li><a href="#!">'.key($data);
             $nav .= '</a></li>'.PHP_EOL;
@@ -22,7 +28,7 @@ class SideMenuView extends BaseView
         $nav .= '<li><a href="#!">experiments</a></li>'.PHP_EOL;
         $nav .= '<li><a href="#!">resume</a></li>'.PHP_EOL;
         $nav .= '</ul>'.PHP_EOL;
-
+        $nav .= '</nav>';
         return $nav;
     }
 
@@ -32,6 +38,11 @@ class SideMenuView extends BaseView
         $html .= $fragment;
         $html .= '</div><!-- end side nav fragment -->';
         return $html;
+    }
+
+    protected function finalize($fragment)
+    {
+        return false;
     }
 
     protected function render()
