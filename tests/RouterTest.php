@@ -1,7 +1,6 @@
 <?php 
 namespace shakabra\cdb;
 
-include '../src/Router.php';
 
 class RouterTest extends Router
 {

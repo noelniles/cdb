@@ -1,6 +1,6 @@
-<?php namespace shakabra\cdb; 
-
-include 'RouterTest.php';
+<?php
+namespace shakabra\cdb; 
+require '../vendor/autoload.php';
 ?>
 
 <!doctype html>
@@ -12,11 +12,16 @@ include 'RouterTest.php';
 
 <body>
 
-<h2>Router Test</h1>
+<h2>Router Test</h2>
 <?php
 $router_test = new RouterTest();
 $router_test->run();
 ?>
 
+<h2>MenuTest</h2>
+<?php
+$menu_test = new MenuTest();
+$menu_test->run();
+?>
 </body>
 </html>
