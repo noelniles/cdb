@@ -14,8 +14,8 @@ class PublisherController extends BaseController
     public function index()
     {
         $vw_data = $this->gather_data();
-        $menu = new PublisherMenuView($vw_data);
-        $view = new PublisherView($vw_data, $menu);
+        //$menu = new PublisherMenuView($vw_data);
+        $view = new PublisherView($vw_data/*, $menu*/);  
         $view->render();
     }
 }

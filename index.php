@@ -1,5 +1,4 @@
 <?php
-define('LOCKDOWN', true);
 error_reporting(-1);
 require 'vendor/autoload.php';
 

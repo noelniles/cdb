@@ -23,30 +23,14 @@ class PublisherView extends BaseView
     
     private function publisher_html()
     {
-        $html  = '<label for="title">title</label>';
-        $html .= '<input type="text" id="title" placeholder="title">'; 
-
-        $html .= '<label for="author">author</label>';
-        $html .= '<input type="text" id="author" placeholder="author">'; 
-
-        $html .= '<label for="date">date</label>';
-        $html .= '<input type="text" id="date" placeholder="date">'; 
-
-        $html .= '<label for="date">date</label>';
-        $html .= '<input type="text" id="date" placeholder="date">'; 
-
-        $html .= '<label for="body">body</label>';
-        $html .= '<input type="text" id="body" placeholder="body">'; 
-
-        $html .= '<button type="button">Save</button>';
-        $html .= '<button type="button">Publish</button>';
-
-        return $html;
+       $this->incl_fragment(['publisher_form' => 'frag/PublisherFormFrag.html']); 
     }
 
     /* shows the data */
     public function render()
     {
-        echo $this->publisher_html();
+        $this->publisher_html();
+        print_r($this->frags);
+        //echo $frags['publisher_form'];
     }
 }

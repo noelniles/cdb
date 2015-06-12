@@ -1,6 +1,8 @@
 <?php
+namespace shakabra\cdb;
 
-class PublisherMenuView extends BaseView
+
+abstract class PublisherMenuView extends BaseView
 {
     
 }
