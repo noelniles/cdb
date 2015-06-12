@@ -1,0 +1,15 @@
+#sidenav {
+    /*display: none;*/
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    /*left: -230px;*/
+    background-color: #FFF;
+    overflow: auto;
+    width: 100px;
+}
+#sidenav > ul {
+    padding-left: 0px;
+    font-size: 13px;
+    list-style: outside none none;
+}
