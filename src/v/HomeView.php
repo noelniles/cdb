@@ -3,8 +3,6 @@ namespace shakabra\cdb;
 
 class HomeView extends BaseView
 {
-    private $css;
-    private $js;
     private $num_pages; 
     private $side_menu;
 
@@ -16,8 +14,6 @@ class HomeView extends BaseView
         parent::__construct($data);
         $this->side_menu = $side_menu;
         $this->num_pages = count($data);
-        $this->css = '<link rel="stylesheet" type="text/css" href="assets/css/materialize.css">';
-        $this->js = '<script src="assets/js/jquery.js"></script>';
     }
 
     /* Inserts css and js into HTML head tag 
@@ -30,8 +26,8 @@ class HomeView extends BaseView
         $html_header .= '<html lang="en">'.PHP_EOL;
         $html_header .= '<head>'.PHP_EOL;
         $html_header .= '<meta charset="utf-8">'.PHP_EOL;
-        $html_header .= $this->css.PHP_EOL;
-        $html_header .= $this->js.PHP_EOL;
+        $html_header .= $this->incl_tags('css', null, null);
+        $html_header .= $this->incl_tags('javascript', null, true);
         $html_header .= "<title>Home</title>".PHP_EOL;
         $html_header .= '</head>'.PHP_EOL;
 
@@ -45,7 +41,6 @@ class HomeView extends BaseView
      */
     private function buildeach_page_without_header()
     {
-        $allpages_without_header = '';
         $page_fragment = '';
 
         for ($i = 0; $i < $this->num_pages; $i++) {
@@ -67,8 +62,7 @@ class HomeView extends BaseView
                 $page_fragment .= '<br><a class="bold italic" href="#">contine reading...</a>'.PHP_EOL;
             }
         }
-        $allpages_without_header = $page_fragment;
-        return $allpages_without_header;
+        return $page_fragment;
     }
     
     /**
@@ -117,8 +111,8 @@ class HomeView extends BaseView
     {
         $frags= $this->buildeach_page_without_header();
         $body = $this->add_fragments_to_body($frags);
-        $valid_html_page = $this->add_header_to_fragments($body);
-        echo $valid_html_page;
+        $header = $this->build_html_header();
+        printf("%s %s", $header, $body);
     }
 }
 
