@@ -3,8 +3,8 @@ namespace shakabra\cdb;
 
 class HomeView extends BaseView
 {
-    private $num_pages;    /* used to control the loop over the database */ 
-    private $side_menu;    /* another view */
+    private $num_pages; 
+    private $side_menu;
 
     /**
      * @param $data Array of documents.
@@ -16,11 +16,31 @@ class HomeView extends BaseView
         $this->num_pages = count($data);
     }
 
-    /* Pulls out 'title', 'author', 'date' and 'html' to build the home view.
+    /* Inserts css and js into HTML head tag 
+     *
+     * @return string HTML head tag 
+     */
+    private function build_html_header()
+    {
+        $html_header = '<!doctype html>'.PHP_EOL;
+        $html_header .= '<html lang="en">'.PHP_EOL;
+        $html_header .= '<head>'.PHP_EOL;
+        $html_header .= '<meta charset="utf-8">'.PHP_EOL;
+        $html_header .= $this->incl_tags('css', null, null);
+        $html_header .= $this->incl_tags('javascript', null, true);
+        $html_header .= "<title>Home</title>".PHP_EOL;
+        $html_header .= '</head>'.PHP_EOL;
+
+        return $html_header;
+    }    
+
+    /**
+     * Adds HTML to page without duplicating HTML head tag.
+     *
+     * @return string A bunch of HTML without a head tag
      */
     private function buildeach_page_without_header()
     {
-        $allpages_without_header = '';
         $page_fragment = '';
 
         for ($i = 0; $i < $this->num_pages; $i++) {
@@ -40,8 +60,7 @@ class HomeView extends BaseView
                 $page_fragment .= '<br><a class="bold italic" href="#">contine reading...</a>'.PHP_EOL;
             }
         }
-        $allpages_without_header = $page_fragment;
-        return $allpages_without_header;
+        return $page_fragment;
     }
     
     /**
@@ -77,10 +96,9 @@ class HomeView extends BaseView
     
     public function render()
     {
-        $frags= $this->buildeach_page_without_header();
-        $body = $this->wrap_fragment($frags);
-        $valid_html_page = $this->finalize($body);
-        echo $valid_html_page;
+        $body = $this->add_fragments_to_body($frags);
+        $header = $this->build_html_header();
+        printf("%s %s", $header, $body);
     }
 }
 

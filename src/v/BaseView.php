@@ -29,16 +29,40 @@ abstract class BaseView
         $this->html_header = $this->build_html_header();
     }
 
-    private function build_html_header(/* array $header_scripts = $this->header_scripts */)
+    /* Creates tags for scripts, stylesheets etc... */
+    protected function incl_tags($type='', array $inc=null, $top=null)
     {
-        $html_header = '<!doctype html>'.PHP_EOL;
-        $html_header .= '<html lang="en">'.PHP_EOL;
-        $html_header .= '<head>'.PHP_EOL;
-        $html_header .= '<meta charset="utf-8">'.PHP_EOL;
-        $html_header .= $this->css.PHP_EOL;
-        $html_header .= $this->js.PHP_EOL;
-        $html_header .= "<title>Home</title>".PHP_EOL;
-        $html_header .= '</head>'.PHP_EOL;
-        return $html_header;
-    }    
+        $hrefs = array();
+
+        switch ($type) {
+            
+            case 'css':
+                $st_tkn = '<link rel="stylesheet" type="text/css" href="';
+                $end_tkn = '">' . PHP_EOL;
+                array_push($hrefs, 'src/res/css/materialize.css');
+                break;
+            case 'javascript':
+                $st_tkn = '<script rel="stylesheet" href="';
+                $end_tkn = '"></script>' . PHP_EOL;
+
+                if ($top) {
+                    array_push($hrefs, 'src/res/js/jquery.js');
+                }
+                break;
+            case 'meta':
+                break;
+            default:
+                break;
+        }
+        if (is_array($inc)) {
+            foreach ($inc as $href) {
+                array_push($hrefs, $href);
+            }
+        }
+        foreach ($hrefs as $href) {
+            $tag = $st_tkn . $href . $end_tkn;
+            return $tag;
+        }
+    } 
 }
+

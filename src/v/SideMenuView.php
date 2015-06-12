@@ -12,7 +12,7 @@ class SideMenuView extends BaseView
 
     private function side_menu($data)
     {
-        $nav = '';
+        $nav = '<ul>' . PHP_EOL;
         foreach ($data as $toplevel_item) {
             $nav .= '<li><a href="#!">'.key($data);
             $nav .= '</a></li>'.PHP_EOL;
@@ -36,8 +36,6 @@ class SideMenuView extends BaseView
 
     protected function render()
     {
-        $frag = $this->side_nav;
-        $menu = $this->wrap_fragment($frag);
-        echo $menu; 
+        return $this->side_nav;    
     }
 }
