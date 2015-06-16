@@ -5,7 +5,7 @@ namespace shakabra\cdb;
 class HomeController extends BaseController
 {
 
-    public function __construct($params)
+    public function __construct($params=null)
     {
         /* Home view uses the 'published' database. */
         $this->dbname = 'published';

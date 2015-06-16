@@ -24,7 +24,6 @@ class Router
             if ($key == 'p') {
                 $prefix = __NAMESPACE__ . "\\" . ucfirst($value);
                 $controller_name = $prefix . "Controller";
-                //$this->cntl = new HomeController($value);
                 $this->cntl = new $controller_name($value);
                 $this->cntl->index();
             }
@@ -38,8 +37,8 @@ class Router
     {
         $uri = parse_url($uri, PHP_URL_QUERY);
         $uri = explode('+', $uri);
-
         $params = array();
+
         foreach ($uri as $param) {
             $item = explode('=', $param);
             if (! empty($item[1])) {

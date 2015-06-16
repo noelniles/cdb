@@ -23,5 +23,11 @@ $router_test->run();
 $menu_test = new MenuTest();
 $menu_test->run();
 ?>
+
+<h2>HomeTest</h2>
+<?php
+$home_test = new HomeTest();
+$home_test->run();
+?>
 </body>
 </html>
